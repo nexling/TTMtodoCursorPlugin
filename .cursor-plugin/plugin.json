@@ -1,0 +1,35 @@
+{
+  "name": "ttm-todo",
+  "version": "0.1.0",
+  "description": "Connect Cursor to TTM-Todo (Takt Time Modular) for inbox, add, and complete workflows using your API token.",
+  "author": {
+    "name": "Emil Johnsson"
+  },
+  "homepage": "https://todo.takttimemodular.com",
+  "repository": "https://github.com/nexling/TTMtodoCursorPlugin",
+  "keywords": [
+    "ttm",
+    "todo",
+    "takt-time-modular",
+    "productivity",
+    "tasks",
+    "inbox"
+  ],
+  "variables": {
+    "type": "object",
+    "properties": {
+      "TODO_API_TOKEN": {
+        "type": "string",
+        "title": "Bearer token for the TTM-Todo API",
+        "description": "Bearer token for the TTM-Todo API"
+      },
+      "TODO_BASE_URL": {
+        "type": "string",
+        "title": "TTM-Todo base URL",
+        "description": "Base URL for the TTM-Todo web app and API (no trailing slash).",
+        "default": "https://todo.takttimemodular.com"
+      }
+    },
+    "required": ["TODO_API_TOKEN"]
+  }
+}

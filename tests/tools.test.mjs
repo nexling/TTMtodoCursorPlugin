@@ -80,6 +80,9 @@ describe("tools", () => {
     }
     assert.equal(names.filter((name) => name === "list_buckets").length, 1);
     assert.equal(names.includes("capture_inbox"), false);
+    for (const name of ["admin_home", "google_status", "remarkable_status", "send_to_remarkable"]) {
+      assert.equal(names.includes(name), false, name);
+    }
   });
 
   it("list_inbox uses the is_inbox bucket and open items only", async () => {
@@ -199,7 +202,7 @@ describe("MCP dispatcher", () => {
     assert.equal(names.includes("list_inbox"), true);
     assert.equal(names.includes("create_item"), true);
     assert.equal(names.includes("overview"), true);
-    assert.ok(listed.result.tools.length > 90);
+    assert.ok(listed.result.tools.length > 70);
   });
 
   it("calls complete_item over JSON-RPC", async () => {

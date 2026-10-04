@@ -23,6 +23,8 @@ const SKIP = new Map([
   ["POST /api/inbox", "Capture Inbox has no request body in the published spec"],
 ]);
 
+const INTERNAL_TAGS = new Set(["admin", "google", "remarkable"]);
+
 const specPath = process.argv[2];
 if (!specPath) {
   console.error("Usage: node scripts/generate-operations.mjs /path/to/openapi.json");
@@ -109,6 +111,16 @@ for (const [path, methods] of Object.entries(spec.paths || {})) {
 
     if (SKIP.has(key)) {
       skipped.push({ method, path, operationId: op.operationId, reason: SKIP.get(key) });
+      continue;
+    }
+    const tags = op.tags || [];
+    if (tags.some((tag) => INTERNAL_TAGS.has(tag))) {
+      skipped.push({
+        method,
+        path,
+        operationId: op.operationId,
+        reason: "Internal-only (admin, Google, and reMarkable APIs are not exposed)",
+      });
       continue;
     }
     if (contentTypes.includes("multipart/form-data") && !contentTypes.includes("application/json")) {

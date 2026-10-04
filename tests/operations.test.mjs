@@ -83,8 +83,16 @@ describe("JSON API operations", () => {
   it("registers unique tools and never POST /api/inbox", () => {
     const names = TOOLS.map((tool) => tool.name);
     assert.equal(new Set(names).size, names.length);
-    assert.equal(OPERATIONS.length, 92);
+    assert.equal(OPERATIONS.length, 74);
     assert.equal(TOOLS.length, OPERATIONS.length + 3);
+    const forbidden = ["admin", "google", "remarkable"];
+    assert.equal(
+      OPERATIONS.some((op) => (op.tags || []).some((tag) => forbidden.includes(tag))),
+      false,
+    );
+    for (const name of ["admin_home", "google_status", "remarkable_status", "send_to_remarkable", "google_keep_connect"]) {
+      assert.equal(TOOLS.some((tool) => tool.name === name), false, name);
+    }
     assert.equal(
       OPERATIONS.some((op) => op.method === "POST" && op.path === "/api/inbox"),
       false,

@@ -48,5 +48,8 @@ describe("plugin contract", () => {
     const readme = read("README.md");
     const missing = TOOLS.map((tool) => tool.name).filter((name) => !readme.includes(`\`${name}\``));
     assert.deepEqual(missing, []);
+    for (const name of ["admin_home", "google_status", "remarkable_status", "send_to_remarkable", "google_keep_connect"]) {
+      assert.equal(readme.includes(`\`${name}\``), false, name);
+    }
   });
 });

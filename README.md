@@ -22,7 +22,7 @@ After you set the token, the agent calls tools that talk to TTM-Todo with `Autho
 
 Bearer tokens use scopes **inbox**, **items**, **buckets**, and **plan**. Plan tools take optional `x_organization_id` (header `X-Organization-Id`) when the user has more than one licensed organization.
 
-**Not exposed** (browser/OAuth HTML, SPA catch-all, or no JSON body): Auth0 `/login` `/logout` `/callback`; Google/Outlook connect and callback pages; `POST /api/inbox`; multipart attachment uploads; PWA `/share-target`; `GET /{full_path}`.
+**Not exposed:** Auth0 `/login` `/logout` `/callback`; Google/Outlook connect and callback pages; `POST /api/inbox`; multipart attachment uploads; PWA `/share-target`; `GET /{full_path}`; and internal-only **admin**, **Google**, and **reMarkable** APIs.
 
 ### Convenience helpers
 
@@ -113,30 +113,6 @@ Bearer tokens use scopes **inbox**, **items**, **buckets**, and **plan**. Plan t
 | `create_token` | Creates an API token with a name and optional scopes. |
 | `revoke_token` | Revokes an API token by id. |
 
-### Admin
-
-| Tool | What it does |
-| --- | --- |
-| `admin_home` | Returns the admin home payload. |
-| `put_individual` | Creates or updates an individual license. |
-| `add_organization` | Creates an organization and owner. |
-| `admin_make_owner` | Transfers ownership of an organization as an admin. |
-| `put_organization` | Creates or updates an organization license. |
-| `remove_license` | Deletes a license by id. |
-| `test_mail` | Sends a test email. |
-
-### Google
-
-| Tool | What it does |
-| --- | --- |
-| `google_status` | Returns Google Tasks and Keep connection status. |
-| `google_tasks_disconnect` | Disconnects Google Tasks. |
-| `google_tasks_list` | Selects which Google Tasks list to sync. |
-| `google_keep_connect` | Connects Google Keep with an email and master token. |
-| `google_keep_disconnect` | Disconnects Google Keep. |
-| `google_keep_lists` | Selects which Keep notes to watch. |
-| `google_sync` | Runs a Google Tasks/Keep sync. |
-
 ### Outlook
 
 | Tool | What it does |
@@ -165,15 +141,6 @@ Bearer tokens use scopes **inbox**, **items**, **buckets**, and **plan**. Plan t
 | `calendar_export_disable` | Disables the calendar export feed. |
 | `calendar_export_regenerate` | Regenerates the calendar export token/path. |
 | `calendar_feed` | Fetches the exported calendar feed for a given token. |
-
-### reMarkable
-
-| Tool | What it does |
-| --- | --- |
-| `remarkable_status` | Returns reMarkable connection and last-sync status. |
-| `remarkable_settings` | Saves reMarkable host, credentials, and folder settings. |
-| `remarkable_sync` | Syncs items with the reMarkable. |
-| `send_to_remarkable` | Sends one item to the reMarkable. |
 
 ### Push and notifications
 

@@ -1669,294 +1669,6 @@ export const OPERATIONS = [
     }
   },
   {
-    "name": "admin_home",
-    "method": "GET",
-    "path": "/api/admin",
-    "operationId": "admin_home_api_admin_get",
-    "summary": "Admin Home",
-    "tags": [
-      "admin"
-    ],
-    "description": "Admin Home. GET /api/admin.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {},
-      "required": [],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "put_individual",
-    "method": "POST",
-    "path": "/api/admin/licenses/individual",
-    "operationId": "put_individual_api_admin_licenses_individual_post",
-    "summary": "Put Individual",
-    "tags": [
-      "admin"
-    ],
-    "description": "Put Individual. POST /api/admin/licenses/individual.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "email",
-      "expires_at",
-      "license_id"
-    ],
-    "bodyRequired": true,
-    "required": [
-      "email",
-      "expires_at"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string",
-          "maxLength": 254,
-          "minLength": 3
-        },
-        "expires_at": {
-          "type": "string"
-        },
-        "license_id": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "email",
-        "expires_at"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "add_organization",
-    "method": "POST",
-    "path": "/api/admin/organizations",
-    "operationId": "add_organization_api_admin_organizations_post",
-    "summary": "Add Organization",
-    "tags": [
-      "admin"
-    ],
-    "description": "Add Organization. POST /api/admin/organizations.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "name",
-      "owner_email"
-    ],
-    "bodyRequired": true,
-    "required": [
-      "name",
-      "owner_email"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "maxLength": 120,
-          "minLength": 1
-        },
-        "owner_email": {
-          "type": "string",
-          "maxLength": 254,
-          "minLength": 3
-        }
-      },
-      "required": [
-        "name",
-        "owner_email"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "admin_make_owner",
-    "method": "POST",
-    "path": "/api/admin/organizations/{organization_id}/memberships/{membership_id}/make-owner",
-    "operationId": "make_owner_api_admin_organizations__organization_id__memberships__membership_id__make_owner_post",
-    "summary": "Make Owner",
-    "tags": [
-      "admin"
-    ],
-    "description": "Make Owner. POST /api/admin/organizations/{organization_id}/memberships/{membership_id}/make-owner.",
-    "pathParams": [
-      "organization_id",
-      "membership_id"
-    ],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "organization_name",
-      "owner_email"
-    ],
-    "bodyRequired": true,
-    "required": [
-      "organization_id",
-      "membership_id",
-      "organization_name",
-      "owner_email"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "organization_id": {
-          "type": "string",
-          "description": "Path parameter for /api/admin/organizations/{organization_id}/memberships/{membership_id}/make-owner"
-        },
-        "membership_id": {
-          "type": "string",
-          "description": "Path parameter for /api/admin/organizations/{organization_id}/memberships/{membership_id}/make-owner"
-        },
-        "organization_name": {
-          "type": "string",
-          "maxLength": 120,
-          "minLength": 1
-        },
-        "owner_email": {
-          "type": "string",
-          "maxLength": 254,
-          "minLength": 3
-        }
-      },
-      "required": [
-        "organization_id",
-        "membership_id",
-        "organization_name",
-        "owner_email"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "put_organization",
-    "method": "POST",
-    "path": "/api/admin/licenses/organization",
-    "operationId": "put_organization_api_admin_licenses_organization_post",
-    "summary": "Put Organization",
-    "tags": [
-      "admin"
-    ],
-    "description": "Put Organization. POST /api/admin/licenses/organization.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "organization_id",
-      "seat_count",
-      "expires_at",
-      "license_id"
-    ],
-    "bodyRequired": true,
-    "required": [
-      "organization_id",
-      "seat_count",
-      "expires_at"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "organization_id": {
-          "type": "string"
-        },
-        "seat_count": {
-          "type": "integer",
-          "minimum": 1
-        },
-        "expires_at": {
-          "type": "string"
-        },
-        "license_id": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "organization_id",
-        "seat_count",
-        "expires_at"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "remove_license",
-    "method": "POST",
-    "path": "/api/admin/licenses/{license_id}/delete",
-    "operationId": "remove_license_api_admin_licenses__license_id__delete_post",
-    "summary": "Remove License",
-    "tags": [
-      "admin"
-    ],
-    "description": "Remove License. POST /api/admin/licenses/{license_id}/delete.",
-    "pathParams": [
-      "license_id"
-    ],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [
-      "license_id"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "license_id": {
-          "type": "string",
-          "description": "Path parameter for /api/admin/licenses/{license_id}/delete"
-        }
-      },
-      "required": [
-        "license_id"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "test_mail",
-    "method": "POST",
-    "path": "/api/admin/test-mail",
-    "operationId": "test_mail_api_admin_test_mail_post",
-    "summary": "Test Mail",
-    "tags": [
-      "admin"
-    ],
-    "description": "Test Mail. POST /api/admin/test-mail.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "email"
-    ],
-    "bodyRequired": true,
-    "required": [
-      "email"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string",
-          "maxLength": 254,
-          "minLength": 3
-        }
-      },
-      "required": [
-        "email"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
     "name": "list_buckets",
     "method": "GET",
     "path": "/api/buckets",
@@ -2619,369 +2331,6 @@ export const OPERATIONS = [
       "required": [
         "attachment_id"
       ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "remarkable_status",
-    "method": "GET",
-    "path": "/api/remarkable",
-    "operationId": "remarkable_status_api_remarkable_get",
-    "summary": "Remarkable Status",
-    "tags": [
-      "remarkable"
-    ],
-    "description": "Remarkable Status. GET /api/remarkable.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {},
-      "required": [],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "remarkable_settings",
-    "method": "POST",
-    "path": "/api/remarkable/settings",
-    "operationId": "remarkable_settings_api_remarkable_settings_post",
-    "summary": "Remarkable Settings",
-    "tags": [
-      "remarkable"
-    ],
-    "description": "Remarkable Settings. POST /api/remarkable/settings.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "host",
-      "user",
-      "port",
-      "folder",
-      "out_folder",
-      "key_path",
-      "private_key"
-    ],
-    "bodyRequired": true,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "host": {
-          "type": "string",
-          "maxLength": 200,
-          "default": ""
-        },
-        "user": {
-          "type": "string",
-          "maxLength": 80,
-          "default": "root"
-        },
-        "port": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 65535,
-          "default": 21
-        },
-        "folder": {
-          "type": "string",
-          "maxLength": 80,
-          "default": "TTM-Todo"
-        },
-        "out_folder": {
-          "type": "string",
-          "maxLength": 80,
-          "default": "From TTM-Todo"
-        },
-        "key_path": {
-          "type": "string",
-          "maxLength": 500,
-          "default": ""
-        },
-        "private_key": {
-          "type": "string",
-          "maxLength": 20000,
-          "default": ""
-        }
-      },
-      "required": [],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "remarkable_sync",
-    "method": "POST",
-    "path": "/api/remarkable/sync",
-    "operationId": "remarkable_sync_api_remarkable_sync_post",
-    "summary": "Remarkable Sync",
-    "tags": [
-      "remarkable"
-    ],
-    "description": "Remarkable Sync. POST /api/remarkable/sync.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {},
-      "required": [],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "send_to_remarkable",
-    "method": "POST",
-    "path": "/api/items/{item_id}/remarkable",
-    "operationId": "send_to_remarkable_api_items__item_id__remarkable_post",
-    "summary": "Send To Remarkable",
-    "tags": [
-      "remarkable"
-    ],
-    "description": "Send To Remarkable. POST /api/items/{item_id}/remarkable.",
-    "pathParams": [
-      "item_id"
-    ],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [
-      "item_id"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "item_id": {
-          "type": "string",
-          "description": "Path parameter for /api/items/{item_id}/remarkable"
-        }
-      },
-      "required": [
-        "item_id"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "google_status",
-    "method": "GET",
-    "path": "/api/google",
-    "operationId": "google_status_api_google_get",
-    "summary": "Google Status",
-    "tags": [
-      "google"
-    ],
-    "description": "Google Status. GET /api/google.",
-    "pathParams": [],
-    "queryParams": [
-      "refresh"
-    ],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "refresh": {
-          "type": "boolean",
-          "default": false,
-          "description": "Query parameter refresh"
-        }
-      },
-      "required": [],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "google_tasks_disconnect",
-    "method": "POST",
-    "path": "/api/google/tasks/disconnect",
-    "operationId": "google_tasks_disconnect_api_google_tasks_disconnect_post",
-    "summary": "Google Tasks Disconnect",
-    "tags": [
-      "google"
-    ],
-    "description": "Google Tasks Disconnect. POST /api/google/tasks/disconnect.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {},
-      "required": [],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "google_tasks_list",
-    "method": "POST",
-    "path": "/api/google/tasks/list",
-    "operationId": "google_tasks_list_api_google_tasks_list_post",
-    "summary": "Google Tasks List",
-    "tags": [
-      "google"
-    ],
-    "description": "Google Tasks List. POST /api/google/tasks/list.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "list_id"
-    ],
-    "bodyRequired": true,
-    "required": [
-      "list_id"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "list_id": {
-          "type": "string",
-          "maxLength": 200,
-          "minLength": 1
-        }
-      },
-      "required": [
-        "list_id"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "google_keep_connect",
-    "method": "POST",
-    "path": "/api/google/keep/connect",
-    "operationId": "google_keep_connect_api_google_keep_connect_post",
-    "summary": "Google Keep Connect",
-    "tags": [
-      "google"
-    ],
-    "description": "Google Keep Connect. POST /api/google/keep/connect.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "email",
-      "master_token"
-    ],
-    "bodyRequired": true,
-    "required": [
-      "email",
-      "master_token"
-    ],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string",
-          "maxLength": 200,
-          "minLength": 3
-        },
-        "master_token": {
-          "type": "string",
-          "maxLength": 500,
-          "minLength": 8
-        }
-      },
-      "required": [
-        "email",
-        "master_token"
-      ],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "google_keep_disconnect",
-    "method": "POST",
-    "path": "/api/google/keep/disconnect",
-    "operationId": "google_keep_disconnect_api_google_keep_disconnect_post",
-    "summary": "Google Keep Disconnect",
-    "tags": [
-      "google"
-    ],
-    "description": "Google Keep Disconnect. POST /api/google/keep/disconnect.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {},
-      "required": [],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "google_keep_lists",
-    "method": "POST",
-    "path": "/api/google/keep/lists",
-    "operationId": "google_keep_lists_api_google_keep_lists_post",
-    "summary": "Google Keep Lists",
-    "tags": [
-      "google"
-    ],
-    "description": "Google Keep Lists. POST /api/google/keep/lists.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [
-      "note_ids",
-      "watch_all"
-    ],
-    "bodyRequired": true,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "note_ids": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "watch_all": {
-          "type": "boolean",
-          "default": false
-        }
-      },
-      "required": [],
-      "additionalProperties": false
-    }
-  },
-  {
-    "name": "google_sync",
-    "method": "POST",
-    "path": "/api/google/sync",
-    "operationId": "google_sync_api_google_sync_post",
-    "summary": "Google Sync",
-    "tags": [
-      "google"
-    ],
-    "description": "Google Sync. POST /api/google/sync.",
-    "pathParams": [],
-    "queryParams": [],
-    "headerParams": [],
-    "bodyParams": [],
-    "bodyRequired": false,
-    "required": [],
-    "inputSchema": {
-      "type": "object",
-      "properties": {},
-      "required": [],
       "additionalProperties": false
     }
   },
@@ -3741,6 +3090,48 @@ export const SKIPPED_OPERATIONS = [
     "reason": "multipart/form-data only (not a JSON body)"
   },
   {
+    "method": "GET",
+    "path": "/api/admin",
+    "operationId": "admin_home_api_admin_get",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/admin/licenses/individual",
+    "operationId": "put_individual_api_admin_licenses_individual_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/admin/organizations",
+    "operationId": "add_organization_api_admin_organizations_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/admin/organizations/{organization_id}/memberships/{membership_id}/make-owner",
+    "operationId": "make_owner_api_admin_organizations__organization_id__memberships__membership_id__make_owner_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/admin/licenses/organization",
+    "operationId": "put_organization_api_admin_licenses_organization_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/admin/licenses/{license_id}/delete",
+    "operationId": "remove_license_api_admin_licenses__license_id__delete_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/admin/test-mail",
+    "operationId": "test_mail_api_admin_test_mail_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
     "method": "POST",
     "path": "/api/items/{item_id}/attachments",
     "operationId": "add_item_attachment_api_items__item_id__attachments_post",
@@ -3754,6 +3145,36 @@ export const SKIPPED_OPERATIONS = [
   },
   {
     "method": "GET",
+    "path": "/api/remarkable",
+    "operationId": "remarkable_status_api_remarkable_get",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/remarkable/settings",
+    "operationId": "remarkable_settings_api_remarkable_settings_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/remarkable/sync",
+    "operationId": "remarkable_sync_api_remarkable_sync_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/items/{item_id}/remarkable",
+    "operationId": "send_to_remarkable_api_items__item_id__remarkable_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "GET",
+    "path": "/api/google",
+    "operationId": "google_status_api_google_get",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "GET",
     "path": "/api/google/tasks/connect",
     "operationId": "google_tasks_connect_api_google_tasks_connect_get",
     "reason": "Google OAuth connect page"
@@ -3763,6 +3184,42 @@ export const SKIPPED_OPERATIONS = [
     "path": "/api/google/callback",
     "operationId": "google_callback_api_google_callback_get",
     "reason": "Google OAuth callback page"
+  },
+  {
+    "method": "POST",
+    "path": "/api/google/tasks/disconnect",
+    "operationId": "google_tasks_disconnect_api_google_tasks_disconnect_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/google/tasks/list",
+    "operationId": "google_tasks_list_api_google_tasks_list_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/google/keep/connect",
+    "operationId": "google_keep_connect_api_google_keep_connect_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/google/keep/disconnect",
+    "operationId": "google_keep_disconnect_api_google_keep_disconnect_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/google/keep/lists",
+    "operationId": "google_keep_lists_api_google_keep_lists_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
+  },
+  {
+    "method": "POST",
+    "path": "/api/google/sync",
+    "operationId": "google_sync_api_google_sync_post",
+    "reason": "Internal-only (admin, Google, and reMarkable APIs are not exposed)"
   },
   {
     "method": "GET",

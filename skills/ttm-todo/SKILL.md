@@ -40,10 +40,9 @@ There is one MCP tool per JSON operation in the TTM-Todo OpenAPI spec. Names, pa
 - **orgs** — `org_settings`, `switch_org`, `rename`, invites, membership, `make_owner`, `kick_member`
 - **auth** — `auth_status`, `setup`, `login`, `logout` (JSON `/api/auth/*`, not the Auth0 HTML pages)
 - **tokens** — `list_tokens`, `create_token`, `revoke_token`
-- **admin** — `admin_home`, licenses, organizations, `test_mail`
-- **google / outlook / ical / calendar-export / remarkable / push / notifications / files / live / health** — status, disconnect, list/sync, events, feeds, export, vapid, preferences, `get_file`, `live_stream`, `health`
+- **outlook / ical / calendar-export / push / notifications / files / live / health** — status, disconnect, events, feeds, export, vapid, preferences, `get_file`, `live_stream`, `health`
 
-OAuth **connect/callback** pages, Auth0 HTML login/logout/callback, the SPA catch-all, and multipart file-upload routes are not tools. For attaching files, send the user to the TTM-Todo web UI.
+OAuth **connect/callback** pages, Auth0 HTML login/logout/callback, the SPA catch-all, multipart file-upload routes, and internal-only **admin**, **Google**, and **reMarkable** APIs are not tools. For attaching files, send the user to the TTM-Todo web UI.
 
 ## Flows
 

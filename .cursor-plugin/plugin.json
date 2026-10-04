@@ -1,6 +1,6 @@
 {
   "name": "ttm-todo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Connect Cursor to TTM-Todo (Takt Time Modular) for inbox, add, and complete workflows using your API token.",
   "author": {
     "name": "Emil Johnsson"

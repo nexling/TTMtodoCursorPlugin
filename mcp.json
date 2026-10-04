@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ttm-todo": {
+      "command": "node",
+      "args": ["${CURSOR_PLUGIN_ROOT}/mcp-server/index.mjs"],
+      "env": {
+        "TODO_API_TOKEN": "${TODO_API_TOKEN}",
+        "TODO_BASE_URL": "${TODO_BASE_URL}"
+      }
+    }
+  }
+}

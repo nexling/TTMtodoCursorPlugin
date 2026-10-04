@@ -20,21 +20,179 @@ This repository is **v0.3.0**, meant for local review. It is **not** submitted t
 
 After you set the token, the agent calls tools that talk to TTM-Todo with `Authorization: Bearer ${TODO_API_TOKEN}`.
 
-### Convenience
-
-| Tool | What it does |
-| --- | --- |
-| `list_inbox` | Finds the bucket with `is_inbox: true`, then lists open items in it |
-| `add_item` | Creates an item (`title`, optional `notes` and `due_at`). Omitting `bucket_id` adds to the inbox |
-| `complete_item` | Marks an item done by id (`{"status":"done"}`) |
-
-### JSON API
-
-One tool per JSON HTTP operation in the TTM-Todo OpenAPI spec (paths, methods, query params, and JSON bodies). Examples: `list_items`, `create_item`, `patch_item`, `list_buckets`, `overview`, `my_todos`, Google/Outlook status and events, tokens, admin, push, calendar export.
+Bearer tokens use scopes **inbox**, **items**, **buckets**, and **plan**. Plan tools take optional `x_organization_id` (header `X-Organization-Id`) when the user has more than one licensed organization.
 
 **Not exposed** (browser/OAuth HTML, SPA catch-all, or no JSON body): Auth0 `/login` `/logout` `/callback`; Google/Outlook connect and callback pages; `POST /api/inbox`; multipart attachment uploads; PWA `/share-target`; `GET /{full_path}`.
 
-Bearer tokens use scopes **inbox**, **items**, **buckets**, and **plan**. Plan tools take optional `x_organization_id` (header `X-Organization-Id`) when the user has more than one licensed organization.
+### Convenience helpers
+
+| Tool | What it does |
+| --- | --- |
+| `list_inbox` | Lists open items in the inbox bucket (the bucket with `is_inbox: true`). |
+| `add_item` | Creates an item from a title (optional notes and due date), using the inbox unless you pass another `bucket_id`. |
+| `complete_item` | Marks an existing item done by id. |
+
+### Items
+
+| Tool | What it does |
+| --- | --- |
+| `list_items` | Lists items, optionally filtered by bucket and whether completed items are included. |
+| `create_item` | Creates an item with the JSON fields from the spec (`title`, `notes`, `bucket_id`, `parent_id`, `source`, `due_at`). |
+| `reorder_items` | Sets the sort order of items from a list of ids. |
+| `get_item` | Fetches one item by id. |
+| `patch_item` | Updates an item (title, notes, bucket, status, due date, and related fields). |
+| `remove_item` | Deletes an item by id. |
+| `delete_attachment` | Deletes one attachment from an item. |
+
+### Buckets
+
+| Tool | What it does |
+| --- | --- |
+| `list_buckets` | Lists every bucket, including which one is the inbox. |
+| `create_bucket` | Creates a bucket with a name and optional color or parent. |
+| `reorder_buckets` | Sets the sort order of buckets from a list of ids. |
+| `update_bucket` | Renames, recolors, or reparents a bucket. |
+| `delete_bucket` | Deletes a bucket by id. |
+
+### Plan
+
+| Tool | What it does |
+| --- | --- |
+| `overview` | Returns the plan overview for the current (or specified) organization. |
+| `create_department` | Creates a plan department. |
+| `update_department` | Updates a department’s name, color, order, or members. |
+| `delete_department` | Deletes a department by id. |
+| `update_person_departments` | Sets which departments a person belongs to. |
+| `department_work` | Lists work grouped by department. |
+| `my_todos` | Lists the current user’s plan todos. |
+| `reorder_departments` | Sets the sort order of departments from a list of ids. |
+| `create_template` | Creates a plan template. |
+| `get_template` | Fetches a plan template by id. |
+| `save_template` | Saves a template’s tasks and schedule settings. |
+| `delete_template` | Deletes a plan template by id. |
+| `create_project` | Creates a plan project, optionally from a template. |
+| `update_project` | Updates a project’s name or delivery date. |
+| `delete_project` | Deletes a plan project by id. |
+| `get_project` | Fetches a plan project by id. |
+| `create_task` | Creates a task on a project. |
+| `update_task` | Updates a plan task. |
+| `delete_task` | Deletes a plan task by id. |
+| `move_task` | Moves a task to another department, date, or position. |
+| `related_tasks` | Lists tasks related to a given task. |
+| `connected_tasks` | Lists tasks connected to a given task. |
+| `reschedule` | Reschedules a task and optionally shifts related work. |
+| `delete_task_attachment` | Deletes an attachment from a plan task. |
+
+### Organizations
+
+| Tool | What it does |
+| --- | --- |
+| `org_settings` | Returns organization settings for the current user. |
+| `switch_org` | Switches the active organization. |
+| `rename` | Renames the current organization. |
+| `create_invite` | Invites someone to the organization by email. |
+| `patch_membership` | Changes a member’s role. |
+| `make_owner` | Transfers organization ownership to a member. |
+| `kick_member` | Removes a member from the organization. |
+| `revoke_invite` | Revokes a pending invitation. |
+
+### Auth (JSON API)
+
+| Tool | What it does |
+| --- | --- |
+| `auth_status` | Returns whether the current session or token is authenticated. |
+| `setup` | Creates the first local username and password. |
+| `login` | Logs in with username and password. |
+| `logout` | Logs out of the JSON auth session. |
+
+### Tokens
+
+| Tool | What it does |
+| --- | --- |
+| `list_tokens` | Lists API tokens (prefixes and scopes, not the secret value). |
+| `create_token` | Creates an API token with a name and optional scopes. |
+| `revoke_token` | Revokes an API token by id. |
+
+### Admin
+
+| Tool | What it does |
+| --- | --- |
+| `admin_home` | Returns the admin home payload. |
+| `put_individual` | Creates or updates an individual license. |
+| `add_organization` | Creates an organization and owner. |
+| `admin_make_owner` | Transfers ownership of an organization as an admin. |
+| `put_organization` | Creates or updates an organization license. |
+| `remove_license` | Deletes a license by id. |
+| `test_mail` | Sends a test email. |
+
+### Google
+
+| Tool | What it does |
+| --- | --- |
+| `google_status` | Returns Google Tasks and Keep connection status. |
+| `google_tasks_disconnect` | Disconnects Google Tasks. |
+| `google_tasks_list` | Selects which Google Tasks list to sync. |
+| `google_keep_connect` | Connects Google Keep with an email and master token. |
+| `google_keep_disconnect` | Disconnects Google Keep. |
+| `google_keep_lists` | Selects which Keep notes to watch. |
+| `google_sync` | Runs a Google Tasks/Keep sync. |
+
+### Outlook
+
+| Tool | What it does |
+| --- | --- |
+| `outlook_status` | Returns Outlook connection status and calendars. |
+| `outlook_disconnect` | Disconnects an Outlook account. |
+| `outlook_calendars` | Selects which Outlook calendars to use. |
+| `outlook_events` | Lists Outlook events between a start and end time. |
+
+### iCal
+
+| Tool | What it does |
+| --- | --- |
+| `ical_status` | Lists configured iCal feeds. |
+| `ical_add_feed` | Adds an iCal feed URL. |
+| `ical_patch_feed` | Updates an iCal feed’s label, URL, or color. |
+| `ical_delete_feed` | Removes an iCal feed. |
+| `ical_events` | Lists iCal events between a start and end time. |
+
+### Calendar export
+
+| Tool | What it does |
+| --- | --- |
+| `calendar_export_status` | Returns whether calendar export is enabled and its path. |
+| `calendar_export_enable` | Enables the calendar export feed. |
+| `calendar_export_disable` | Disables the calendar export feed. |
+| `calendar_export_regenerate` | Regenerates the calendar export token/path. |
+| `calendar_feed` | Fetches the exported calendar feed for a given token. |
+
+### reMarkable
+
+| Tool | What it does |
+| --- | --- |
+| `remarkable_status` | Returns reMarkable connection and last-sync status. |
+| `remarkable_settings` | Saves reMarkable host, credentials, and folder settings. |
+| `remarkable_sync` | Syncs items with the reMarkable. |
+| `send_to_remarkable` | Sends one item to the reMarkable. |
+
+### Push and notifications
+
+| Tool | What it does |
+| --- | --- |
+| `get_vapid` | Returns the VAPID public key for web push. |
+| `subscribe` | Subscribes a browser push endpoint. |
+| `unsubscribe` | Unsubscribes a browser push endpoint. |
+| `test_push` | Sends a test push notification. |
+| `get_preferences` | Returns notification preferences. |
+| `patch_preferences` | Updates a notification preference category. |
+
+### Files, live, and health
+
+| Tool | What it does |
+| --- | --- |
+| `get_file` | Fetches an attachment file by id. |
+| `live_stream` | Opens the live-update stream endpoint. |
+| `health` | Checks that the TTM-Todo API is up. |
 
 Regenerate the catalog if the spec changes (do not commit `openapi.json`):
 

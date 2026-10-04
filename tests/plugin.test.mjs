@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { TOOLS } from "../mcp-server/tools.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
@@ -41,5 +42,11 @@ describe("plugin contract", () => {
     assert.equal(/not wired/i.test(skill), false);
     assert.equal(/API is not wired/i.test(skill), false);
     assert.equal(/This slice does not cover/i.test(skill), false);
+  });
+
+  it("README describes every MCP tool by name", () => {
+    const readme = read("README.md");
+    const missing = TOOLS.map((tool) => tool.name).filter((name) => !readme.includes(`\`${name}\``));
+    assert.deepEqual(missing, []);
   });
 });

@@ -73,9 +73,13 @@ function parseTool(result) {
 }
 
 describe("tools", () => {
-  it("exposes inbox, add, complete, and list_buckets", () => {
-    const names = TOOLS.map((tool) => tool.name).sort();
-    assert.deepEqual(names, ["add_item", "complete_item", "list_buckets", "list_inbox"]);
+  it("exposes convenience tools plus one tool per JSON API operation", () => {
+    const names = TOOLS.map((tool) => tool.name);
+    for (const name of ["list_inbox", "add_item", "complete_item", "list_buckets", "create_item", "patch_item"]) {
+      assert.equal(names.includes(name), true, name);
+    }
+    assert.equal(names.filter((name) => name === "list_buckets").length, 1);
+    assert.equal(names.includes("capture_inbox"), false);
   });
 
   it("list_inbox uses the is_inbox bucket and open items only", async () => {
@@ -155,8 +159,10 @@ describe("tools", () => {
       return jsonResponse(500, { detail: "unexpected" });
     });
     const payload = parseTool(await handlers.list_buckets());
-    assert.equal(payload.buckets.length, 2);
-    assert.equal(payload.buckets[0].is_inbox, true);
+    assert.equal(payload.method, "GET");
+    assert.equal(payload.path, "/api/buckets");
+    assert.equal(payload.result.length, 2);
+    assert.equal(payload.result[0].is_inbox, true);
   });
 
   it("rejects add_item without a title", async () => {
@@ -187,12 +193,13 @@ describe("MCP dispatcher", () => {
       params: { protocolVersion: "2025-03-26", capabilities: {}, clientInfo: { name: "test" } },
     });
     assert.equal(init.result.serverInfo.name, SERVER_INFO.name);
-    assert.equal(init.result.serverInfo.version, "0.2.0");
+    assert.equal(init.result.serverInfo.version, "0.3.0");
     const listed = await dispatch({ jsonrpc: "2.0", id: 2, method: "tools/list" });
-    assert.deepEqual(
-      listed.result.tools.map((tool) => tool.name).sort(),
-      ["add_item", "complete_item", "list_buckets", "list_inbox"],
-    );
+    const names = listed.result.tools.map((tool) => tool.name);
+    assert.equal(names.includes("list_inbox"), true);
+    assert.equal(names.includes("create_item"), true);
+    assert.equal(names.includes("overview"), true);
+    assert.ok(listed.result.tools.length > 90);
   });
 
   it("calls complete_item over JSON-RPC", async () => {

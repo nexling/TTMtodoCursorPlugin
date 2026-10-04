@@ -51,10 +51,10 @@ export function createTtmClient({
 } = {}) {
   const root = normalizeBaseUrl(baseUrl);
 
-  async function request(method, path, { query, body } = {}) {
+  async function request(method, path, { query, body, headers: extraHeaders } = {}) {
     if (isUnset(token)) {
       throw new TtmConfigError(
-        "TODO_API_TOKEN is not set. In Cursor, open Plugins → ttm-todo → Configure and paste your TTM-Todo API token. The token needs the items and buckets scopes.",
+        "TODO_API_TOKEN is not set. In Cursor, open Plugins → ttm-todo → Configure and paste your TTM-Todo API token. Token scopes are inbox, items, buckets, and plan.",
       );
     }
     if (typeof fetchImpl !== "function") {
@@ -73,6 +73,13 @@ export function createTtmClient({
       Authorization: `Bearer ${String(token).trim()}`,
       Accept: "application/json",
     };
+    if (extraHeaders) {
+      for (const [key, value] of Object.entries(extraHeaders)) {
+        if (value === undefined || value === null || value === "") continue;
+        headers[key] = String(value);
+      }
+    }
+
     let payload;
     if (body !== undefined) {
       headers["Content-Type"] = "application/json";
@@ -100,7 +107,7 @@ export function createTtmClient({
       const detail = formatApiDetail(parsed);
       const scopeHint =
         response.status === 401 || response.status === 403
-          ? " Check that TODO_API_TOKEN is valid and has the items and buckets scopes."
+          ? " Check that TODO_API_TOKEN is valid and has the needed scopes (inbox, items, buckets, plan)."
           : "";
       throw new TtmApiError(
         `TTM-Todo API ${method} ${url.pathname} returned ${response.status}${detail ? `: ${detail}` : "."}${scopeHint}`,

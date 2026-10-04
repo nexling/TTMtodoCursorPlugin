@@ -2,7 +2,7 @@ import { TOOLS, callTool, createToolHandlers } from "./tools.mjs";
 
 export const SERVER_INFO = {
   name: "ttm-todo",
-  version: "0.2.0",
+  version: "0.3.0",
 };
 
 const SUPPORTED_PROTOCOL_VERSIONS = new Set(["2024-11-05", "2025-03-26", "2025-06-18"]);

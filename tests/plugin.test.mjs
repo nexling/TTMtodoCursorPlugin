@@ -11,10 +11,10 @@ function read(relPath) {
 }
 
 describe("plugin contract", () => {
-  it("bumps the manifest to 0.2.0 and keeps both variables", () => {
+  it("bumps the manifest to 0.3.0 and keeps both variables", () => {
     const manifest = JSON.parse(read(".cursor-plugin/plugin.json"));
     assert.equal(manifest.name, "ttm-todo");
-    assert.equal(manifest.version, "0.2.0");
+    assert.equal(manifest.version, "0.3.0");
     assert.deepEqual(Object.keys(manifest.variables.properties).sort(), ["TODO_API_TOKEN", "TODO_BASE_URL"]);
     assert.deepEqual(manifest.variables.required, ["TODO_API_TOKEN"]);
   });
@@ -31,13 +31,15 @@ describe("plugin contract", () => {
     assert.equal(serialized.includes("mt_"), false);
   });
 
-  it("skill uses the MCP tools and no longer says the API is unwired", () => {
+  it("skill uses convenience tools and the broader JSON API tools", () => {
     const skill = read("skills/ttm-todo/SKILL.md");
     assert.match(skill, /list_inbox/);
     assert.match(skill, /add_item/);
     assert.match(skill, /complete_item/);
+    assert.match(skill, /create_item/);
+    assert.match(skill, /list_items/);
     assert.equal(/not wired/i.test(skill), false);
-    assert.equal(/do not guess/i.test(skill), false);
     assert.equal(/API is not wired/i.test(skill), false);
+    assert.equal(/This slice does not cover/i.test(skill), false);
   });
 });

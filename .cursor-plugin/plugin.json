@@ -1,7 +1,7 @@
 {
   "name": "ttm-todo",
-  "version": "0.1.0",
-  "description": "Connect Cursor to TTM-Todo (Takt Time Modular) for inbox, add, and complete workflows using your API token.",
+  "version": "0.3.0",
+  "description": "Connect Cursor to TTM-Todo (Takt Time Modular). MCP tools cover the JSON HTTP API plus inbox/add/complete helpers.",
   "author": {
     "name": "Emil Johnsson"
   },

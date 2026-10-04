@@ -1,40 +1,54 @@
 ---
 name: ttm-todo
-description: Help the user work with TTM-Todo (inbox, add tasks, complete tasks) using plugin variables TODO_API_TOKEN and TODO_BASE_URL. Use when the user mentions TTM-Todo, takttimemodular todo, or wants to manage tasks in that app from Cursor.
+description: Help the user work with TTM-Todo using the ttm-todo MCP tools (inbox, items, buckets, plan, and the rest of the JSON API). Use when the user mentions TTM-Todo, takttimemodular todo, or wants to manage that app from Cursor.
 ---
 
 # TTM-Todo assistant
 
+Use the **ttm-todo MCP server**. Call its tools instead of inventing curl or REST. Do not call `POST /api/inbox` (Capture Inbox has no request body in the published spec). Adding to the inbox is `add_item` without a `bucket_id` (or `create_item` with the inbox bucket id).
+
 ## Configuration
 
-This plugin expects Cursor to inject these variables (set under **Plugins → Configure** for `ttm-todo`):
+Cursor injects these plugin variables (**Plugins → Configure** for `ttm-todo`):
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `TODO_API_TOKEN` | Yes | Bearer token for authenticating to the TTM-Todo API |
-| `TODO_BASE_URL` | No (default `https://todo.takttimemodular.com`) | Base URL for TTM-Todo |
+| `TODO_API_TOKEN` | Yes | Bearer token (`Authorization: Bearer …`). Scopes: **inbox**, **items**, **buckets**, **plan**. |
+| `TODO_BASE_URL` | No (default `https://todo.takttimemodular.com`) | Origin, no trailing slash |
 
-Never commit token values. If `TODO_API_TOKEN` is missing, tell the user to configure it in Cursor before making API calls.
+If a tool reports a missing token, tell the user to paste it in Plugins → Configure. Never commit the token.
 
-## API contract status
+Plan tools accept optional `x_organization_id` (sent as `X-Organization-Id`). Pass it when the user belongs to more than one licensed organization.
 
-**The HTTP API shape for TTM-Todo is not wired in this plugin slice.** There is no `mcp.json`, no OpenAPI spec, and no documented REST paths in this repository. The public API contract was not found for this agent to rely on.
+## Convenience tools
 
-**Do not invent or guess** endpoints, paths, query parameters, request bodies, or response schemas. Do not assume MCP server URLs.
+Prefer these for the common inbox workflow:
 
-## What you can still do
+| Tool | When to use |
+| --- | --- |
+| `list_inbox` | Open items in the inbox bucket (`is_inbox: true`). |
+| `add_item` | Create an item. Required `title` (max 500). Optional `notes`, `due_at`, `bucket_id`. Omit `bucket_id` to add to the inbox. |
+| `complete_item` | Mark done by `item_id` (`status: done`). Reopen with `patch_item` and `status: "open"`. |
 
-1. **Orient the user** — TTM-Todo lives at the configured `TODO_BASE_URL` (default https://todo.takttimemodular.com). Common intents: view **inbox**, **add** a task, **complete** a task.
-2. **Prepare for future API use** — When official API documentation or an updated plugin (e.g. MCP or documented HTTP routes) is available, use `Authorization: Bearer ${TODO_API_TOKEN}` (or the documented scheme) against `${TODO_BASE_URL}` as specified there.
-3. **Manual workflow** — Until API details are published, guide the user to use the web UI at `TODO_BASE_URL` for inbox, add, and complete actions. You may help draft task titles, descriptions, or checklists as text the user can paste into the app.
-4. **Verify before calling HTTP** — If the user provides their own API docs, a captured request from browser devtools, or an updated version of this plugin with real routes, follow only that authoritative source. Otherwise refuse to run speculative `curl` or fetch calls against guessed URLs.
+## JSON API tools
 
-## When API support lands (future)
+There is one MCP tool per JSON operation in the TTM-Todo OpenAPI spec. Names, paths, query params, and JSON body fields match that contract. Use `tools/list` if you need the schema. Groups:
 
-After the plugin or TTM-Todo docs define real operations, typical flows will likely map to:
+- **items** — `list_items`, `create_item`, `reorder_items`, `get_item`, `patch_item`, `remove_item`, `delete_attachment`
+- **buckets** — `list_buckets`, `create_bucket`, `reorder_buckets`, `update_bucket`, `delete_bucket`
+- **plan** — `overview`, `my_todos`, `department_work`, department/template/project/task CRUD, `move_task`, `related_tasks`, `connected_tasks`, `reschedule`, `delete_task_attachment`
+- **orgs** — `org_settings`, `switch_org`, `rename`, invites, membership, `make_owner`, `kick_member`
+- **auth** — `auth_status`, `setup`, `login`, `logout` (JSON `/api/auth/*`, not the Auth0 HTML pages)
+- **tokens** — `list_tokens`, `create_token`, `revoke_token`
+- **outlook / ical / calendar-export / push / notifications / files / live / health** — status, disconnect, events, feeds, export, vapid, preferences, `get_file`, `live_stream`, `health`
 
-- **Inbox** — list or fetch tasks awaiting action
-- **Add** — create a new task with user-supplied content
-- **Complete** — mark a task done by id or identifier from the documented API
+OAuth **connect/callback** pages, Auth0 HTML login/logout/callback, the SPA catch-all, multipart file-upload routes, and internal-only **admin**, **Google**, and **reMarkable** APIs are not tools. For attaching files, send the user to the TTM-Todo web UI.
 
-Until then, state clearly that automation is blocked pending documented API integration.
+## Flows
+
+1. **Inbox** — `list_inbox`. Show titles, ids, notes, due dates.
+2. **Add** — `add_item` with the user's title. Default destination is the inbox. For another bucket, `list_buckets` then pass `bucket_id`.
+3. **Complete** — `complete_item` with `item_id`. Do not delete unless the user asks (`remove_item`).
+4. **Anything else the API supports** — pick the matching JSON API tool. Do not invent paths.
+
+401/403 means the token is missing, invalid, or lacks the needed scope.
